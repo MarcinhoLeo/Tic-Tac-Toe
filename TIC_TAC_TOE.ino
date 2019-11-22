@@ -32,7 +32,7 @@ void setup() {
   pinMode(right,INPUT);
   pinMode(left,INPUT);
   pinMode(G,INPUT);
-  place = 5; //начальнаое положение по середине
+  place = 5; //начальнаое положение посередине
   turn = 1; //первый ход ( 1 для Х, 2 для О)
   lcd.InitLCD();
   lcd.setFont(SmallFont);
