@@ -1,13 +1,11 @@
 #include <LCD5110_Graph.h>
 
-#define left 3 //кнопка вправо
-#define right 5 //кпопка влево
+#define left 5 //кнопка вправо
+#define right 3 //кпопка влево
 #define G 8 //кпопка при надавливании на стик
-#define DELAY 300
-LCD5110 lcd(9,10,11,12,13);
 
 int next =0;
-int previous =0;
+int prev =0;
 int play =0;
 int place = 0;
 int turn = 0;
@@ -25,61 +23,66 @@ int t7 =0;
 int t8 =0;
 int t9 =0;
 
-
 extern uint8_t us_int[];
+extern unsigned char SmallFont[]; //размер шрифта
+
+LCD5110 lcd(9,10,11,12,13);
 
 void setup() {
   pinMode(right,INPUT);
   pinMode(left,INPUT);
   pinMode(G,INPUT);
-  place = 1; // начальнаое положение
-  turn = 1; // первый ход ( 1 для Х, 2 для О)
+  place = 5; //начальнаое положение по середине
+  turn = 1; //первый ход ( 1 для Х, 2 для О)
   lcd.InitLCD();
-  delay(1000);
+  lcd.setFont(SmallFont);
+  lcd.update();
+  delay(100);
+  lcd.drawBitmap(0,0,us_int,84,48); // поле для игры
   lcd.update();
 }
 
-/*
 void loop() {
   next = digitalRead(right);
-  previous = digitalRead(left);
+  prev = digitalRead(left);
   play = digitalRead(G);
-  plc(); // проверяю свободно ли место, если занято то перемещаю на след
-  win(); // пользуюсь если есть победитель
-if(previous == HIGH){
+  plc();//проверяю свободно ли место, если занято то перемещаю на след
+  win();//пользуюсь если есть победитель
+if(prev == LOW){
    if(place != 1){
-     lcd.print(" ",x,y); // показывает на каком месте я нахожусь
+     lcd.print((char *) " ",x,y);
     place= place-1;
-    prv(); // перемещение на пред место
-    delay(300); 
+    prv(); //перемещение на пред место
+    delay(300);
    }else{
-    lcd.print(" ",x,y);
+    lcd.print((char *) " ",x,y);
     place=9;
     prv();
     delay(300);
    }
     }
   
-if(next == HIGH){
+if(next == LOW){
    if(place != 9){
+    lcd.print((char *) " ",x,y);
     place= place+1;
-    nxt(); // пермещение на след место
+    nxt();//пермещение на след место
     delay(300);
    }else{
-    lcd.print(" ",x,y);
+    lcd.print((char *) " ",x,y);
     place=1;
     nxt();
     delay(300);
    }
 }
-if(play == HIGH){
+if(play == LOW){
   if(turn ==1){
     tn=1;
-    lcd.print("X",x,y);
+    lcd.print((char *) "X",x,y);
   }
   if(turn ==2){
     tn=2;
-    lcd.print("O",x,y);
+    lcd.print((char *) "O",x,y);
   }
   take();
   lcd.update();
@@ -90,7 +93,6 @@ if(play == HIGH){
   }
 }
 }
-*/
 
 void take(){
   if(place == 1){
@@ -122,8 +124,6 @@ void take(){
   }
 }
 
-
-/*
 void plc(){
  if(place == 1){
    if(t1 >=1 ){
@@ -131,7 +131,7 @@ void plc(){
      }else{
     x=22 ;
     y=4 ;
-    lcd.print("_",x,y);
+    lcd.print((char *) "_",x,y);
     lcd.update(); 
     }
   }
@@ -141,7 +141,7 @@ void plc(){
     }else{
     x=38 ;
     y=4 ;
-    lcd.print("_",x,y);
+    lcd.print((char *) "_",x,y);
     lcd.update();
     }
   }
@@ -161,7 +161,7 @@ void plc(){
     }else{
     x=22 ;
     y=20 ;
-    lcd.print("_",x,y);
+    lcd.print((char *) "_",x,y);
     lcd.update();
     }
   }
@@ -171,7 +171,7 @@ void plc(){
     }else{
     x=38 ;
     y=20 ;
-    lcd.print("_",x,y);
+    lcd.print((char *) "_",x,y);
     lcd.update();
     }
   }
@@ -181,7 +181,7 @@ void plc(){
     }else{
     x=54 ;
     y=20 ;
-    lcd.print("_",x,y);
+    lcd.print((char *) "_",x,y);
     lcd.update();
     }
   }
@@ -191,7 +191,7 @@ void plc(){
     }else{
     x=22 ;
     y=36 ;
-    lcd.print("_",x,y);
+    lcd.print((char *) "_",x,y);
     lcd.update();
     }
   }
@@ -201,7 +201,7 @@ void plc(){
     }else{
     x=38 ;
     y=36 ;
-    lcd.print("_",x,y);
+    lcd.print((char *) "_",x,y);
     lcd.update();
     }
   }
@@ -211,13 +211,12 @@ void plc(){
    }else{
     x=54 ;
     y=36 ;
-    lcd.print("_",x,y);
+    lcd.print((char *) "_",x,y);
     lcd.update();
    }
   }
   
 }
-*/
 
 //функция перемещ на след место
 void nxt (){
@@ -313,6 +312,8 @@ void prv (){
 void win (){
   if(t1==1 && t2==1 && t3==1 || t4==1 && t5==1 && t6==1 || t7==1 && t8==1 && t9==1 || t1==1 && t5==1 && t9==1 || t3==1 && t5==1 && t7==1 || t1==1 && t4==1 && t7==1 || t2==1 && t5==1 && t8==1 || t3==1 && t6==1 && t9==1){
     delay(1000);
+    lcd.update();
+    delay(500);
     t1 =0;
     t2 =0;
     t3 =0;
@@ -322,12 +323,13 @@ void win (){
     t7 =0;
     t8 =0;
     t9 =0;
-    
     lcd.drawBitmap(0,0,us_int,84,48);
     place =1;
   }
   if(t1==2 && t2==2 && t3==2 || t4==2 && t5==2 && t6==2 || t7==2 && t8==2 && t9==2 || t1==2 && t5==2 && t9==2 || t3==2 && t5==2 && t7==2 || t1==2 && t4==2 && t7==2 || t2==2 && t5==2 && t8==2 || t3==2 && t6==2 && t9==2){
     delay(1000);
+    lcd.update();
+    delay(500);
     t1 =0;
     t2 =0;
     t3 =0;
@@ -337,12 +339,13 @@ void win (){
     t7 =0;
     t8 =0;
     t9 =0;
-    
     lcd.drawBitmap(0,0,us_int,84,48);
     place =1;
   }
   if(t1>=1 && t2>=1 && t3>=1 && t4>=1 && t5>=1 && t6>=1 && t7>=1 && t8>=1 && t9>=1){
     delay(1000);
+    lcd.update();
+    delay(500);
     t1 =0;
     t2 =0;
     t3 =0;
@@ -352,7 +355,6 @@ void win (){
     t7 =0;
     t8 =0;
     t9 =0;
-    
     lcd.drawBitmap(0,0,us_int,84,48);
     place =1;
   }
