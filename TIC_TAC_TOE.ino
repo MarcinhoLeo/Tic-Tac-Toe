@@ -2,7 +2,7 @@
 
 #define pinX A0 //координата по Х
 #define pinY A1 //координата по У
-#define G 4 //кпопка при надавливании на стик
+#define G 4 //кпопка вниз (кпопка выбора Х или 0)
 
 int play =0;
 int place = 0;
@@ -30,7 +30,7 @@ void setup() {
   pinMode(pinX,INPUT);
   pinMode(pinY,INPUT);
   pinMode(G,INPUT);
-  place = 5; //начальнаое положение по середине
+  place = 5; //начальнаое положение посередине
   turn = 1; //первый ход ( 1 для Х, 2 для О)
   lcd.InitLCD();
   lcd.setFont(SmallFont);
@@ -72,6 +72,7 @@ if ((analogRead(pinX) >= 680) && (analogRead(pinY) >=0 )&& (analogRead(pinY) <= 
     delay(200);
    }
 }
+  
 if(play == LOW){
   if(turn ==1){
     tn=1;
