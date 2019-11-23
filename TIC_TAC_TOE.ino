@@ -1,11 +1,9 @@
 #include <LCD5110_Graph.h>
 
-#define left 5 //кнопка вправо
-#define right 3 //кпопка влево
-#define G 8 //кпопка при надавливании на стик
+#define pinX A0 //координата по Х
+#define pinY A1 //координата по У
+#define G 4 //кпопка при надавливании на стик
 
-int next =0;
-int prev =0;
 int play =0;
 int place = 0;
 int turn = 0;
@@ -29,10 +27,10 @@ extern unsigned char SmallFont[]; //размер шрифта
 LCD5110 lcd(9,10,11,12,13);
 
 void setup() {
-  pinMode(right,INPUT);
-  pinMode(left,INPUT);
+  pinMode(pinX,INPUT);
+  pinMode(pinY,INPUT);
   pinMode(G,INPUT);
-  place = 5; //начальнаое положение посередине
+  place = 5; //начальнаое положение по середине
   turn = 1; //первый ход ( 1 для Х, 2 для О)
   lcd.InitLCD();
   lcd.setFont(SmallFont);
@@ -43,12 +41,11 @@ void setup() {
 }
 
 void loop() {
-  next = digitalRead(right);
-  prev = digitalRead(left);
   play = digitalRead(G);
   plc();//проверяю свободно ли место, если занято то перемещаю на след
   win();//пользуюсь если есть победитель
-if(prev == LOW){
+  
+if ((analogRead(pinX) == 0) && (analogRead(pinY) >=0 )&& (analogRead(pinY) <= 700)){
    if(place != 1){
      lcd.print((char *) " ",x,y);
     place= place-1;
@@ -58,11 +55,11 @@ if(prev == LOW){
     lcd.print((char *) " ",x,y);
     place=9;
     prv();
-    delay(300);
+    delay(200);
    }
-    }
-  
-if(next == LOW){
+}
+
+if ((analogRead(pinX) >= 680) && (analogRead(pinY) >=0 )&& (analogRead(pinY) <= 700)){
    if(place != 9){
     lcd.print((char *) " ",x,y);
     place= place+1;
@@ -72,7 +69,7 @@ if(next == LOW){
     lcd.print((char *) " ",x,y);
     place=1;
     nxt();
-    delay(300);
+    delay(200);
    }
 }
 if(play == LOW){
