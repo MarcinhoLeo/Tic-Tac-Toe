@@ -2,7 +2,7 @@
 
 #define pinX A0 //координата по Х
 #define pinY A1 //координата по У
-#define G 4 //кпопка при надавливании на стик
+#define G 4 //нижняя цветная кнопка
 #define DELAY 300
 
 int place = 0;
@@ -36,7 +36,7 @@ void setup() {
   pinMode(pinY,INPUT);
   pinMode(G,INPUT);
   digitalWrite(G, HIGH);
-  place = 5; //начальнаое положение по середине
+  place = 5; //начальнаое положение посередине
   turn = 1; //первый ход ( 1 для Х, 2 для О)
   lcd.InitLCD();
   lcd.setFont(SmallFont);
