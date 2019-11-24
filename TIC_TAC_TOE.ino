@@ -2,7 +2,7 @@
 
 #define pinX A0 //координата по Х
 #define pinY A1 //координата по У
-#define G 4 //кпопка вниз (кпопка выбора Х или 0)
+#define G 4 //кпопка при надавливании на стик
 
 int play =0;
 int place = 0;
@@ -30,7 +30,7 @@ void setup() {
   pinMode(pinX,INPUT);
   pinMode(pinY,INPUT);
   pinMode(G,INPUT);
-  place = 5; //начальнаое положение посередине
+  place = 5; //начальнаое положение по середине
   turn = 1; //первый ход ( 1 для Х, 2 для О)
   lcd.InitLCD();
   lcd.setFont(SmallFont);
@@ -44,12 +44,13 @@ void loop() {
   play = digitalRead(G);
   plc();//проверяю свободно ли место, если занято то перемещаю на след
   win();//пользуюсь если есть победитель
-  
+
+  //попадаю на левую четверть
 if ((analogRead(pinX) == 0) && (analogRead(pinY) >=0 )&& (analogRead(pinY) <= 700)){
    if(place != 1){
      lcd.print((char *) " ",x,y);
     place= place-1;
-    prv(); //перемещение на пред место
+    prv(); //перемещение на пред место по горизонтали
     delay(300);
    }else{
     lcd.print((char *) " ",x,y);
@@ -59,11 +60,12 @@ if ((analogRead(pinX) == 0) && (analogRead(pinY) >=0 )&& (analogRead(pinY) <= 70
    }
 }
 
+//попадаю на правую четверть
 if ((analogRead(pinX) >= 680) && (analogRead(pinY) >=0 )&& (analogRead(pinY) <= 700)){
    if(place != 9){
     lcd.print((char *) " ",x,y);
     place= place+1;
-    nxt();//пермещение на след место
+    nxt();//пермещение на след место по горизонтали 
     delay(300);
    }else{
     lcd.print((char *) " ",x,y);
@@ -72,7 +74,38 @@ if ((analogRead(pinX) >= 680) && (analogRead(pinY) >=0 )&& (analogRead(pinY) <= 
     delay(200);
    }
 }
-  
+
+//попадаю на верхнюю четверть
+if ((analogRead(pinX) >= 80) && (analogRead(pinX) <= 700) && (analogRead(pinY) >=680)){
+   if((place != 1) && (place != 2) && (place != 3)){
+    lcd.print((char *) " ",x,y);
+    place= place-3;
+    prvv();//пермещение на пред место по вертикали
+    delay(300);
+   }else{
+    lcd.print((char *) " ",x,y);
+    place += 6;
+    prvv();
+    delay(200);
+   }
+}
+
+//попадаю на нижнюю четверть
+if ((analogRead(pinX) >= 80) && (analogRead(pinX) <= 700) && (analogRead(pinY) == 0)){
+   if((place != 9) && (place != 8) && (place != 7)){
+    lcd.print((char *) " ",x,y);
+    place= place+3;
+    nxtv();//пермещение на след место по вертикали
+    delay(300);
+   }else{
+    lcd.print((char *) " ",x,y);
+    place -=6;
+    nxtv();
+    delay(200);
+   }
+}
+
+//нажатие на кнопку для выбора Х либо 0
 if(play == LOW){
   if(turn ==1){
     tn=1;
@@ -84,7 +117,7 @@ if(play == LOW){
   }
   take();
   lcd.update();
-  delay(500);
+  delay(2000);
   turn++;
   if(turn==3){
     turn=1;
@@ -122,6 +155,7 @@ void take(){
   }
 }
 
+//проверяю свободна ли ячейка
 void plc(){
  if(place == 1){
    if(t1 >=1 ){
@@ -216,7 +250,7 @@ void plc(){
   
 }
 
-//функция перемещ на след место
+//функция перемещ на след место по горизонтали
 void nxt (){
   if(place ==1 && t1 >=1){
     place++;
@@ -248,7 +282,98 @@ void nxt (){
 
 }
 
-//функция перемещ на пред место
+//функция перемещ на след место по вертикали
+void nxtv (){
+  if(place ==1 && t1 >=1){
+    place += 3;
+  }
+  if(place ==2 && t2 >=1){
+    place += 3;
+  }
+  if(place ==3 && t3 >=1){
+    place += 3;
+  }
+  if(place ==4 && t4 >=1){
+    place =+ 3;
+  }
+  if(place ==5 && t5 >=1){
+    place += 3;
+  }
+  if(place ==6 && t6 >=1){
+    place += 3;
+  }
+  if(place ==7 && t7 >=1){
+    place = 1;
+  }
+  if(place ==8 && t8 >=1){
+    place = 2;
+  }
+  if(place ==9 && t9 >=1){
+    place = 3;
+  }
+
+}
+
+//функция перемещ на пред место по вертикали 
+void prvv (){
+  if(place ==9 && t9 >=1){
+    place -= 3;
+  }
+  if(place ==8 && t8 >=1){
+    place -= 3;
+  }
+  if(place ==7 && t7 >=1){
+    place -= 3;
+  }
+  if(place ==6 && t6 >=1){
+    place--;
+  }
+  if(place ==5 && t5 >=1){
+    place -= 3;
+  }
+  if(place ==4 && t4 >=1){
+    place -= 3;
+  }
+  if(place ==3 && t3 >=1){
+    place = 9;
+  }
+  if(place ==2 && t2 >=1){
+    place = 8;
+  }
+  if(place ==1 && t1 >=1){
+    place = 7;
+  }
+  if(place ==9 && t9 >=1){
+    place -= 3;
+  }
+  if(place ==8 && t8 >=1){
+    place -= 3;
+  }
+  if(place ==7 && t7 >=1){
+    place -= 3;
+  }
+  if(place ==6 && t6 >=1){
+    place -= 3;
+  }
+  if(place ==5 && t5 >=1){
+    place -= 3;
+  }
+  if(place ==4 && t4 >=1){
+    place -= 3;
+  }
+  if(place ==3 && t3 >=1){
+    place = 9;
+  }
+  if(place ==2 && t2 >=1){
+    place = 8;
+  }
+  if(place ==1 && t1 >=1){
+    place = 7;
+  }
+}
+
+
+//функция перемещ на пред место по горизонтали 
 void prv (){
   if(place ==9 && t9 >=1){
     place--;
