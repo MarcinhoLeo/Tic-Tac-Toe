@@ -183,7 +183,7 @@ void plc(){
     }else{
     x=54 ;
     y=4 ;
-    lcd.print("_",x,y);
+    lcd.print((char *) "_",x,y);
     lcd.update();
     }
   }
