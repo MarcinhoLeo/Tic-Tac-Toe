@@ -26,7 +26,7 @@ int t7 =0;
 int t8 =0;
 int t9 =0;
 
-extern uint8_t wino[]; //everything is self explanatory here
+extern uint8_t wino[];
 extern uint8_t winx[];
 extern uint8_t draw[];
 extern uint8_t us_int[];
@@ -35,8 +35,6 @@ extern unsigned char SmallFont[]; //размер шрифта
 LCD5110 lcd(9,10,11,12,13);
 
 void setup() {
-  //pinMode(7,OUTPUT);
-  //digitalWrite(7,LOW);
   pinMode(pinX,INPUT);
   pinMode(pinY,INPUT);
   pinMode(G,INPUT);
