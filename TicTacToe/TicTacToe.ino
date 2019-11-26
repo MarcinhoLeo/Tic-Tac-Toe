@@ -25,7 +25,6 @@ int t6 =0;
 int t7 =0;
 int t8 =0;
 int t9 =0;
-int suka =0;
 
 extern uint8_t wino[];
 extern uint8_t winx[];
@@ -473,9 +472,9 @@ void win (){
     t7 =0;
     t8 =0;
     t9 =0;
+    lcd.drawBitmap(0,0,us_int,84,48);
     place = 5;
     turn = 1;
-    suka++;
   }
   if(t1==2 && t2==2 && t3==2 || t4==2 && t5==2 && t6==2 || t7==2 && t8==2 && t9==2 || t1==2 && t5==2 && t9==2 || t3==2 && t5==2 && t7==2 || t1==2 && t4==2 && t7==2 || t2==2 && t5==2 && t8==2 || t3==2 && t6==2 && t9==2){
     delay(500);
@@ -491,9 +490,9 @@ void win (){
     t7 =0;
     t8 =0;
     t9 =0;
+    lcd.drawBitmap(0,0,us_int,84,48);
     place = 5;
     turn = 1;
-    suka++;
   }
   if(t1>=1 && t2>=1 && t3>=1 && t4>=1 && t5>=1 && t6>=1 && t7>=1 && t8>=1 && t9>=1){
     delay(500);
@@ -509,16 +508,8 @@ void win (){
     t7 =0;
     t8 =0;
     t9 =0;
+    lcd.drawBitmap(0,0,us_int,84,48);
     place = 5;
     turn = 1;
-    suka++;
   }
-  if(suka >=1){
-    lcd.print((char) *"GO, AGAIN?",x,y)
-    lcd.update();
-    delay(3000);
-    if(digitalRead(E) == LOW){
-    lcd.drawBitmap(0,0,us_int,84,48);
-      }
-    }
 }
