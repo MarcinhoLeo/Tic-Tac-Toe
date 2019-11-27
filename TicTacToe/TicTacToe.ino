@@ -3,10 +3,11 @@
 #define pinX A0 //координата по Х
 #define pinY A1 //координата по У
 #define G 4 //кпопка при надавливании на стик
+#define E 6//кнопка Е для начала новой игры 
 #define DELAY 300
 
-int place = 0;
-int turn = 0;
+int place = 0;//номер ячейки
+int turn = 0;//знач Х либо О
 int tn = 0;
 
 
@@ -26,10 +27,10 @@ int t7 =0;
 int t8 =0;
 int t9 =0;
 
-extern uint8_t wino[];
-extern uint8_t winx[];
-extern uint8_t draw[];
-extern uint8_t us_int[];
+extern uint8_t wino[];//растровое изобр после победы О
+extern uint8_t winx[];//расторое изобр после победы Х
+extern uint8_t draw[];//растровое изобр при ничье
+extern uint8_t us_int[];//растровое поле для игры
 extern unsigned char SmallFont[]; //размер шрифта
 
 LCD5110 lcd(9,10,11,12,13);
@@ -40,6 +41,7 @@ void setup() {
   pinMode(pinX,INPUT);
   pinMode(pinY,INPUT);
   pinMode(G,INPUT);
+  pinMode(E,INPUT);
   digitalWrite(G, HIGH);
   place = 5; //начальнаое положение по середине
   turn = 1; //первый ход ( 1 для Х, 2 для О)
@@ -47,7 +49,7 @@ void setup() {
   lcd.setFont(SmallFont);
   lcd.update();
   delay(100);
-  lcd.drawBitmap(0,0,us_int,84,48); // поле для игры
+  lcd.drawBitmap(0,0,us_int,84,48);
   lcd.update();
 }
 
@@ -460,9 +462,26 @@ void prv (){
 void win (){
   if(t1==1 && t2==1 && t3==1 || t4==1 && t5==1 && t6==1 || t7==1 && t8==1 && t9==1 || t1==1 && t5==1 && t9==1 || t3==1 && t5==1 && t7==1 || t1==1 && t4==1 && t7==1 || t2==1 && t5==1 && t8==1 || t3==1 && t6==1 && t9==1){
     delay(500);
+    lcd.clrScr();
+    delay(100);
     lcd.drawBitmap(0,0,winx,84,48);
     lcd.update();
-    delay(3000);
+    delay(1000);
+    lcd.clrScr();
+    delay(1000);
+    
+    //проверка для начала новой игры
+    while(digitalRead(E) == HIGH){
+      lcd.print((char *) "  TO PLAY ",10,25);
+      lcd.print((char *) " PRESS E ",16,15);
+      lcd.update();
+      if (digitalRead(E) == LOW){
+      break;
+    }
+    }
+    delay(500);
+    lcd.drawBitmap(0,0,us_int,84,48);
+    lcd.update();
     t1 =0;
     t2 =0;
     t3 =0;
@@ -472,15 +491,32 @@ void win (){
     t7 =0;
     t8 =0;
     t9 =0;
-    lcd.drawBitmap(0,0,us_int,84,48);
     place = 5;
     turn = 1;
   }
+  
   if(t1==2 && t2==2 && t3==2 || t4==2 && t5==2 && t6==2 || t7==2 && t8==2 && t9==2 || t1==2 && t5==2 && t9==2 || t3==2 && t5==2 && t7==2 || t1==2 && t4==2 && t7==2 || t2==2 && t5==2 && t8==2 || t3==2 && t6==2 && t9==2){
     delay(500);
+    lcd.clrScr();
+    delay(100);
     lcd.drawBitmap(0,0,wino,84,48);
     lcd.update();
-    delay(3000);
+    delay(1000);
+    lcd.clrScr();
+    delay(1000);
+
+    //проверка для начала новой игры
+    while(digitalRead(E) == HIGH){
+      lcd.print((char *) " TO PLAY ",16,25);
+      lcd.print((char *) "  PRESS E ",10,15);
+      lcd.update();
+      if (digitalRead(E) == LOW){
+      break;
+    }
+    }
+    delay(500);
+    lcd.drawBitmap(0,0,us_int,84,48);
+    lcd.update(); 
     t1 =0;
     t2 =0;
     t3 =0;
@@ -490,15 +526,32 @@ void win (){
     t7 =0;
     t8 =0;
     t9 =0;
-    lcd.drawBitmap(0,0,us_int,84,48);
     place = 5;
     turn = 1;
   }
+  
   if(t1>=1 && t2>=1 && t3>=1 && t4>=1 && t5>=1 && t6>=1 && t7>=1 && t8>=1 && t9>=1){
     delay(500);
+    lcd.clrScr();
+    delay(100);
     lcd.drawBitmap(0,0,draw,84,48);
     lcd.update();
-    delay(3000);
+    delay(1000);
+    lcd.clrScr();
+    delay(1000);
+
+    //проверка для начала новой игры
+    while(digitalRead(E) == HIGH){
+      lcd.print((char *) " TO PLAY ",16,25);
+      lcd.print((char *) "  PRESS E ",10,15);
+      lcd.update();
+      if (digitalRead(E) == LOW){
+      break;
+    }
+    }
+    delay(500);
+    lcd.drawBitmap(0,0,us_int,84,48);
+    lcd.update(); 
     t1 =0;
     t2 =0;
     t3 =0;
@@ -508,7 +561,6 @@ void win (){
     t7 =0;
     t8 =0;
     t9 =0;
-    lcd.drawBitmap(0,0,us_int,84,48);
     place = 5;
     turn = 1;
   }
