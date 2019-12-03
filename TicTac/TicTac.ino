@@ -32,7 +32,9 @@ extern uint8_t winx[];//расторое изобр после победы Х
 extern uint8_t draw[];//растровое изобр при ничье
 extern uint8_t us_int[];//растровое поле для игры
 extern uint8_t draw_x[];//растровое изобр Х
+extern uint8_t draw_xx[];//растровое изобр Х
 extern uint8_t draw_o[];//растровое изобр О
+extern uint8_t draw_oo[];//растровое изобр О
 extern uint8_t draw_cursor[];//растровое изобр курсора
 extern uint8_t empty[];
 
@@ -94,11 +96,13 @@ if((digitalRead(G) == LOW) && (plc() == false)){
   if(turn ==1){
     tn=1;
     lcd.drawBitmap(x,y-1,draw_x,5,5);
+    lcd.drawBitmap(0,0,draw_oo,5,5);
     lcd.update();
   }
   else{
     tn=2;
     lcd.drawBitmap(x,y-1,draw_o,5,5);
+    lcd.drawBitmap(0,0,draw_xx,5,5);
     lcd.update();
   }
   
@@ -123,6 +127,7 @@ void cursor(){
   lcd.update();
   last_place = place;
   x+=5;
+  
 }
 
 //заполение ячеек значениями 1(для крестиков) или 2(для ноликов)
