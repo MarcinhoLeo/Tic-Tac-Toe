@@ -2,18 +2,14 @@
 
 #define pinX A0 //координата по Х
 #define pinY A1 //координата по У
-#define G 4 //кпопка при надавливании на стик
+#define G 4 //цветная нижняя кнопка
 #define E 6//кнопка Е для начала новой игры 
 #define DELAY 300
 
 int place = 0;//номер ячейки
-int last_place = 0;
+int last_place = 0;//для запоминания последнего места курсора
 int turn = 0;//знач Х либо О
-int tn = 0;
-
-int valBut = 0; //задаю переменную, для счетчика 
-long previousMillis = 0; //задаю начальное значение для счетчика millis
-long TimePush = 5; //необходимое время нажатия на кнопку
+int tn = 0;//для записывания 1 или 2
 
 int x = 0;
 int y = 0;
@@ -32,9 +28,9 @@ extern uint8_t winx[];//расторое изобр после победы Х
 extern uint8_t draw[];//растровое изобр при ничье
 extern uint8_t us_int[];//растровое поле для игры
 extern uint8_t draw_x[];//растровое изобр Х
-extern uint8_t draw_xx[];//растровое изобр Х
+extern uint8_t draw_xx[];//растровое изобр Х(в левом верхнем углу)
 extern uint8_t draw_o[];//растровое изобр О
-extern uint8_t draw_oo[];//растровое изобр О
+extern uint8_t draw_oo[];//растровое изобр О(в левом верхнем углу)
 extern uint8_t draw_cursor[];//растровое изобр курсора
 extern uint8_t empty[];
 
@@ -45,11 +41,12 @@ LCD5110 lcd(9,10,11,12,13);
 void setup() {
   //pinMode(7,OUTPUT);
   //digitalWrite(7,LOW);
-  pinMode(pinX,INPUT);
+  pinMode(pinX,INPUT); 
   pinMode(pinY,INPUT);
-  pinMode(G,INPUT);
-  pinMode(E,INPUT);
-  digitalWrite(G, HIGH);
+  pinMode(G,INPUT);//чтение нижней кнопки
+  pinMode(E,INPUT);//чтение кнопки E
+  digitalWrite(G, HIGH);//подтягивающий резистр
+  digitalWrite(E, HIGH);//подгятивающий резистр
   place = 5; //начальнаое положение посередине
   turn = 1; //первый ход ( 1 для Х, 2 для О)
   lcd.InitLCD();
